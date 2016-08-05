@@ -18,5 +18,5 @@ URL shortener powered by GitHub pages & repos
 </ol>
 
 <p>
-    <small>Forked from [ghurl/ghurl.github.io](https://github.com/ghurl/ghurl.github.io).</small>
+    Forked from <a href="https://github.com/ghurl/ghurl.github.io">ghurl/ghurl.github.io</a>
 </p>
