@@ -1,291 +1,294 @@
 <!doctype html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>ghurl</title>
+  <meta charset="UTF-8">
+  <title>Ukaza's URL Shortener</title>
 
-	<style>
-		body {
-			color: #1A1A1A;
-			font-family: Helvetica, Arial, sans-serif;
-			font-size: 20px;
-			background-color: #ebe8df;
-			overflow-y: scroll;
-		}
+  <style>
+    body {
+      color: #1A1A1A;
+      font-family: Helvetica, Arial, sans-serif;
+      font-size: 20px;
+      background-color: #ebe8df;
+      overflow-y: scroll;
+    }
 
-		#container {
-			left: auto;
-			width: 35em;
-			margin: 5em auto;
-			background-color: white;
-			padding: 1em 2em 2em 2em;
-		}
+    #container {
+      left: auto;
+      width: 35em;
+      margin: 5em auto;
+      background-color: white;
+      padding: 1em 2em 2em 2em;
+    }
 
-		a {
-			color: #c0392b;
-			text-decoration: none;
-		}
+    a {
+      color: #c0392b;
+      text-decoration: none;
+    }
 
-		a:hover {
-			text-decoration: underline;
-		}
+    a:hover {
+      text-decoration: underline;
+    }
 
-		address {
-			text-align: right;
-			font-size: 0.75em;
-		}
+    address {
+      text-align: right;
+      font-size: 0.75em;
+    }
 
-		section {
-			display: none;
-		}
+    section {
+      display: none;
+    }
 
-		pre {
-			background-color: #f8f8f8;
-			border: 1px solid #ddd;
-			overflow: auto;
-			padding: 6px 10px;
-			border-radius: 3px;
-		}
+    pre {
+      background-color: #f8f8f8;
+      border: 1px solid #ddd;
+      overflow: auto;
+      padding: 6px 10px;
+      border-radius: 3px;
+    }
 
-		body.unk section.unk,
-		body.explain section.explain,
-		body.redirect section.redirect,
-		body.error section.error
-		{
-			display: block;
-		}
+    body.unk section.unk,
+    body.explain section.explain,
+    body.redirect section.redirect,
+    body.error section.error
+    {
+      display: block;
+    }
 
-		ol {
-			list-style-type: none;
-			list-style-type: decimal !ie; /*IE 7- hack*/
+    ol {
+      list-style-type: none;
+      list-style-type: decimal !ie; /*IE 7- hack*/
 
-			margin: 0;
-			margin-left: 3em;
-			padding: 0;
+      margin: 0;
+      margin-left: 3em;
+      padding: 0;
 
-			counter-reset: li-counter;
-		}
-		ol > li{
-			position: relative;
-			margin-bottom: 20px;
-			padding-left: 0.5em;
-			min-height: 3em;
-			border-left: 2px solid #CCCCCC;
-		}
-		ol > li:before {
-			position: absolute;
-			top: 0;
-			left: -1em;
-			width: 0.8em;
+      counter-reset: li-counter;
+    }
+    ol > li{
+      position: relative;
+      margin-bottom: 20px;
+      padding-left: 0.5em;
+      min-height: 3em;
+      border-left: 2px solid #CCCCCC;
+    }
+    ol > li:before {
+      position: absolute;
+      top: 0;
+      left: -1em;
+      width: 0.8em;
 
-			font-size: 3em;
-			line-height: 1;
-			font-weight: bold;
-			text-align: right;
-			color: #464646;
+      font-size: 3em;
+      line-height: 1;
+      font-weight: bold;
+      text-align: right;
+      color: #464646;
 
-			content: counter(li-counter);
-			counter-increment: li-counter;
-		}
+      content: counter(li-counter);
+      counter-increment: li-counter;
+    }
 
-		input[type="text"] {
-			padding: 10px;
-			border: none;
-			border-bottom: solid 2px #c9c9c9;
-			transition: border 0.3s;
-			outline: none;
-			background-color: #eee;
-			font-size: 1em;
-			width: 80%
-		}
-		input[type="text"]:focus {
-			border-bottom: solid 2px #969696;
-		}
+    input[type="text"] {
+      padding: 10px;
+      border: none;
+      border-bottom: solid 2px #c9c9c9;
+      transition: border 0.3s;
+      outline: none;
+      background-color: #eee;
+      font-size: 1em;
+      width: 80%
+    }
+    input[type="text"]:focus {
+      border-bottom: solid 2px #969696;
+    }
 
-		button {
-			padding: 10px;
-			border: none;
-			border-bottom: solid 2px #c9c9c9;
-			outline: none;
-			background-color: #eee;
-			font-size: 1em;
-			cursor: pointer;
-			width: 10%;
-		}
-		button:hover {
-			background-color: #ddd;
-		}
-		button:active {
-			border-bottom-color: #969696;;
-		}
+    button {
+      padding: 10px;
+      border: none;
+      border-bottom: solid 2px #c9c9c9;
+      outline: none;
+      background-color: #eee;
+      font-size: 1em;
+      cursor: pointer;
+      width: 10%;
+    }
+    button:hover {
+      background-color: #ddd;
+    }
+    button:active {
+      border-bottom-color: #969696;;
+    }
 
-	</style>
+  </style>
 
 </head>
 <body class="unk">
-	<script>
-		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-				m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-		ga('create', 'UA-38564882-9', 'ghurl.github.io');
-		ga('send', 'pageview');
-	</script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-	<script>
-		var issuesUrl = "https://api.github.com/repos/ghurl/db/issues";
+    ga('create', 'UA-82068314-1', 'auto');
+    ga('send', 'pageview');
 
-		var getJson = function(url, cb) {
-			var r = new XMLHttpRequest();
-			r.open("GET", url, true);
-			r.onreadystatechange = function () {
-				if(r.readyState !== 4) return;
-				var json = JSON.parse(r.responseText);
-				cb(r.status, json);
-			};
-			r.send();
-		};
+  </script>
 
-		var getN = function() {
-			return parseInt(window.location.search.substring(1), 10);
-		};
+  <script>
+    var issuesUrl = "https://api.github.com/repos/ukazap/u/issues";
 
-		var fixUrl = function(url) {
-			if(!/^https?:\/\//.test(url)) {
-				return 'http://' + url;
-			}
-			return url;
-		};
+    var getJson = function(url, cb) {
+      var r = new XMLHttpRequest();
+      r.open("GET", url, true);
+      r.onreadystatechange = function () {
+        if(r.readyState !== 4) return;
+        var json = JSON.parse(r.responseText);
+        cb(r.status, json);
+      };
+      r.send();
+    };
 
-		var handleSubmit = function(e) {
-			if (e && e.preventDefault) e.preventDefault();
-			var title = encodeURIComponent(document.getElementById('ipt').value);
-			var body = encodeURIComponent("After creating the issue, construct your shortened URL using n, the issue's number:  https://ghurl.github.io/?n");
-			if (nextN) {
-				body += encodeURIComponent("\n\nIf nobody beats you to it, your URL will be:  https://ghurl.github.io/?" + nextN);
-			}
-			var url = 'https://github.com/ghurl/db/issues/new?title=' + title + '&body=' + body;
-			window.open(url, '_blank');
-			return false;
-		};
+    var getN = function() {
+      return parseInt(window.location.search.substring(1), 10);
+    };
 
-		var redirect = function(n) {
-			document.body.className = "redirect";
-			getJson(issuesUrl + '/' + n, function(status, json) {
-				if(status === 200) {
-					var url = fixUrl(json.title);
-					window.location.replace(url);
-				} else {
-					document.body.className = "error";
-					console.log(json.message);
-					document.getElementById('error-message').innerHTML = json.message;
-				}
-			})
-		};
+    var fixUrl = function(url) {
+      if(!/^https?:\/\//.test(url)) {
+        return 'http://' + url;
+      }
+      return url;
+    };
 
-		var nextN = null;
+    var handleSubmit = function(e) {
+      if (e && e.preventDefault) e.preventDefault();
+      var title = encodeURIComponent(document.getElementById('ipt').value);
+      var body = encodeURIComponent("After creating the issue, construct your shortened URL using n, the issue's number:  http://ukazap.space/u/?n");
+      if (nextN) {
+        body += encodeURIComponent("\n\nIf nobody beats you to it, your URL will be:  http://ukazap.space/u/?" + nextN);
+      }
+      var url = 'https://github.com/ukazap/u/issues/new?title=' + title + '&body=' + body;
+      window.open(url, '_blank');
+      return false;
+    };
 
-		var explain = function() {
-			document.body.className = "explain";
-			getJson(issuesUrl, function(status, json) {
-				nextN = json[0].number + 1;
-				var ul = document.getElementById('existing');
-				var i;
-				for(i = 0; i < json.length; i++) {
-					var number = json[i].number;
-					var url = fixUrl(json[i].title);
-					var short = 'ghurl.github.io/?' + number;
-					var li = document.createElement('li');
-					var a = document.createElement('a');
-					a.href = 'https://' + short;
-					a.textContent = short + ' → ' + url;
-					li.appendChild(a);
-					ul.appendChild(li);
-				}
-			})
-		};
+    var redirect = function(n) {
+      document.body.className = "redirect";
+      getJson(issuesUrl + '/' + n, function(status, json) {
+        if(status === 200) {
+          var url = fixUrl(json.title);
+          window.location.replace(url);
+        } else {
+          document.body.className = "error";
+          console.log(json.message);
+          document.getElementById('error-message').innerHTML = json.message;
+        }
+      })
+    };
 
-		var main = function() {
-			var n = getN();
-			if (n) {
-				redirect(n);
-			} else {
-				explain();
-			}
-		};
+    var nextN = null;
 
-		setTimeout(main, 1);
-	</script>
+    var explain = function() {
+      document.body.className = "explain";
+      getJson(issuesUrl, function(status, json) {
+        nextN = json[0].number + 1;
+        var ul = document.getElementById('existing');
+        var i;
+        for(i = 0; i < json.length; i++) {
+          var number = json[i].number;
+          var url = fixUrl(json[i].title);
+          var short = 'ukazap.space/u/?' + number;
+          var li = document.createElement('li');
+          var a = document.createElement('a');
+          a.href = 'https://' + short;
+          a.textContent = short + ' → ' + url;
+          li.appendChild(a);
+          ul.appendChild(li);
+        }
+      })
+    };
 
-	<div id="container">
-		<h1><a href="/">ghurl</a></h1>
+    var main = function() {
+      var n = getN();
+      if (n) {
+        redirect(n);
+      } else {
+        explain();
+      }
+    };
 
-		<section class="unk">
-			<p>Loading...</p>
-		</section>
+    setTimeout(main, 1);
+  </script>
 
-		<section class="explain">
-			<p>
-				Proof of concept URL shortener with no back-end servers (apart from GitHub's!).
-			</p>
-			<ol>
-				<li>
-					Create an issue on the <a href="https://github.com/ghurl/db/issues">ghurl/db</a> repository.
-					The <strong>title</strong> of the issue should be the URL you want to redirect to.
-					<p>
-						<form onSubmit="return handleSubmit();">
-							<input id="ipt" type="text" placeholder="http://paste.your/url/here">
-							<button type="submit">go</button>
-						</form>
-					</p>
-				</li>
-				<li>Note <strong>n</strong>, the <strong>issue's number</strong>.</li>
-				<li>
-					Construct your shortened URL using <strong>n</strong>:
-					<code>https://ghurl.github.io/?n</code>
-				</li>
-			</ol>
-			<p>
-				Existing URLs:
-			</p>
-			<ul id="existing">
+  <div id="container">
+    <h1><a href="/">Ukaza's URL Shortener</a></h1>
 
-			</ul>
+    <section class="unk">
+      <p>Loading...</p>
+    </section>
 
-		</section>
+    <section class="explain">
+      <p>
+        Proof of concept URL shortener with no back-end servers (apart from GitHub's!).
+      </p>
+      <ol>
+        <li>
+          Create an issue on the <a href="https://github.com/ukazap/u/issues">ukazap/u</a> repository.
+          The <strong>title</strong> of the issue should be the URL you want to redirect to.
+          <p>
+            <form onSubmit="return handleSubmit();">
+              <input id="ipt" type="text" placeholder="http://paste.your/url/here">
+              <button type="submit">go</button>
+            </form>
+          </p>
+        </li>
+        <li>Note <strong>n</strong>, the <strong>issue's number</strong>.</li>
+        <li>
+          Construct your shortened URL using <strong>n</strong>:
+          <code>http://ukazap.space/u/?n</code>
+        </li>
+      </ol>
+      <p>
+        Existing URLs:
+      </p>
+      <ul id="existing">
 
-		<section class="error">
-			<p>
-				Oops, I think that's a bad URL.
-			</p>
-			<p>
-				Correct URLs are in the format <code>https://ghurl.github.io/?n</code>,
-				where n is an issue on the <a href="https://github.com/ghurl/db/issues">ghurl/db</a> repository.
-				The title of the issue is used as the URL to redirect.
-			</p>
-			<p>
-				This is the error message you got:
-			</p>
-			<pre id="error-message">
+      </ul>
 
-			</pre>
-		</section>
+    </section>
 
-		<section class="redirect">
-			<p>
-				Now redirecting...
-			</p>
-		</section>
+    <section class="error">
+      <p>
+        Oops, I think that's a bad URL.
+      </p>
+      <p>
+        Correct URLs are in the format <code>http://ukazap.space/u/?n</code>,
+        where n is an issue on the <a href="https://github.com/ukazap/u/issues">ukazap/u</a> repository.
+        The title of the issue is used as the URL to redirect.
+      </p>
+      <p>
+        This is the error message you got:
+      </p>
+      <pre id="error-message">
 
-		<address>
-			<div class="author">
-				A quick hack by <a href="https://github.com/gberger">gberger</a>
-			</div>
-			<div class="source">
-				Source code available <a href="https://github.com/ghurl/ghurl.github.io">on GitHub</a>
-			</div>
-		</address>
-	</div>
+      </pre>
+    </section>
+
+    <section class="redirect">
+      <p>
+        Now redirecting...
+      </p>
+    </section>
+
+    <address>
+      <div class="author">
+        A quick hack by <a href="https://github.com/gberger">gberger</a>, (forked by <a href="https://github.com/ukazap">ukazap</a>)
+      </div>
+      <div class="source">
+        Source code available <a href="https://github.com/ukazap/u">on GitHub</a>,
+        (<a href="https://github.com/ghurl/ghurl.github.io">original here</a>)
+      </div>
+    </address>
+  </div>
 
 </body>
 </html>
