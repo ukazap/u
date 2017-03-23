@@ -162,9 +162,9 @@
     var handleSubmit = function(e) {
       if (e && e.preventDefault) e.preventDefault();
       var title = encodeURIComponent(document.getElementById('ipt').value);
-      var body = encodeURIComponent("After creating the issue, construct your shortened URL using n, the issue's number:  http://ukazap.space/u/?n");
+      var body = encodeURIComponent("After creating the issue, construct your shortened URL using n, the issue's number:  https://ukazap.github.io/u/?n");
       if (nextN) {
-        body += encodeURIComponent("\n\nIf nobody beats you to it, your URL will be:  http://ukazap.space/u/?" + nextN);
+        body += encodeURIComponent("\n\nIf nobody beats you to it, your URL will be:  https://ukazap.github.io/u/?" + nextN);
       }
       var url = 'https://github.com/ukazap/u/issues/new?title=' + title + '&body=' + body;
       window.open(url, '_blank');
@@ -196,7 +196,7 @@
         for(i = 0; i < json.length; i++) {
           var number = json[i].number;
           var url = fixUrl(json[i].title);
-          var short = 'ukazap.space/u/?' + number;
+          var short = 'ukazap.github.io/u/?' + number;
           var li = document.createElement('li');
           var a = document.createElement('a');
           a.href = 'http://' + short;
@@ -244,7 +244,7 @@
         <li>Note <strong>n</strong>, the <strong>issue's number</strong>.</li>
         <li>
           Construct your shortened URL using <strong>n</strong>:
-          <code>http://ukazap.space/u/?n</code>
+          <code>https://ukazap.github.io/u/?n</code>
         </li>
       </ol>
       <p>
@@ -261,7 +261,7 @@
         Oops, I think that's a bad URL.
       </p>
       <p>
-        Correct URLs are in the format <code>http://ukazap.space/u/?n</code>,
+        Correct URLs are in the format <code>https://ukazap.github.io/u/?n</code>,
         where n is an issue on the <a href="https://github.com/ukazap/u/issues">ukazap/u</a> repository.
         The title of the issue is used as the URL to redirect.
       </p>
